@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HFF - Hands Free Forever</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="header">
+    <button id="lockBtn" class="lock-btn" type="button" aria-label="Configurar bloqueio">🔒</button>
+    <h1 style="margin:0; letter-spacing: 2px;">HFF</h1>
+    <p style="margin:5px 0 0 0; opacity: 0.9;">Hands Free Forever</p>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <button id="micBtn" class="btn-mic" type="button">🎤</button>
+      <div id="status" class="status">Toque para falar</div>
+      <p id="transcript" style="font-style: italic; margin-top: 15px; min-height: 20px; color: #666;"></p>
+    </div>
+
+    <div class="card">
+      <div class="balance-grid">
+        <div>
+          <p style="margin:0; font-size: 0.9em; opacity: 0.8;">Entradas do Mês</p>
+          <div id="totalIn" class="val up">R$ 0,00</div>
+        </div>
+        <div>
+          <p style="margin:0; font-size: 0.9em; opacity: 0.8;">Saídas do Mês</p>
+          <div id="totalOut" class="val down">R$ 0,00</div>
+        </div>
+        <div style="grid-column: span 2;">
+          <p style="margin:0; font-size: 0.9em; opacity: 0.8;">Saldo do Mês</p>
+          <div id="currentBalance" class="val neutral">R$ 0,00</div>
+        </div>
+      </div>
+
+      <div id="negativeAlert" class="negative-alert">Atenção: Saldo Negativo! 📉</div>
+
+      <div class="manual-input-group">
+        <input type="number" id="manualValue" placeholder="Valor (ex: 50.00)" step="0.01" />
+        <input type="text" id="manualDescription" placeholder="Descrição (ex: compras, salário)" />
+        <div class="input-buttons">
+          <button id="btnManualEntry" class="btn-entry" type="button">Registrar Entrada</button>
+          <button id="btnManualExit" class="btn-exit" type="button">Registrar Saída</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <canvas id="myChart"></canvas>
+      <button id="btnSendReport" class="btn-action" type="button">📤 Enviar Relatório do Mês p/ WhatsApp</button>
+    </div>
+  </div>
+
+  <a href="https://wa.me/5521992851164?text=Olá Henrique, estou testando o HFF e tenho um feedback:" class="fb-btn" target="_blank">💬</a>
+
+  <!-- TELA DE DESBLOQUEIO (já aprovada) -->
+  <div id="lockOverlay" class="lock-overlay" aria-hidden="true">
+    <div class="lock-panel" role="dialog" aria-modal="true" aria-labelledby="lockTitle">
+      <div class="lock-logo">HFF</div>
+      <div class="lock-badge">Bloqueado</div>
+
+      <h2 id="lockTitle" class="lock-title">Digite o PIN</h2>
+      <p class="lock-desc">Ou fale: “desbloquear 1234”</p>
+
+      <div class="lock-field">
+        <input id="pinInput" class="lock-pin" inputmode="numeric" maxlength="4" placeholder="••••" />
+      </div>
+
+      <button id="unlockBtn" class="btn-action" type="button">Desbloquear</button>
+
+      <p class="lock-foot">Bloqueio é opcional (menu 🔒).</p>
+    </div>
+  </div>
+
+  <!-- CONFIGURAÇÃO DO BLOQUEIO (substitui o prompt 1/2/3) -->
+  <div id="lockSettingsOverlay" class="lock-overlay" aria-hidden="true">
+    <div class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="settings-head">
+        <div class="settings-titlewrap">
+          <div class="settings-eyebrow">Segurança</div>
+          <h2 id="settingsTitle" class="settings-title">Bloqueio opcional</h2>
+        </div>
+        <button id="settingsCloseBtn" class="icon-btn" type="button" aria-label="Fechar">✕</button>
+      </div>
+
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Ativar bloqueio</div>
+          <div class="settings-help">Quando ligado, você pode bloquear e desbloquear por PIN/voz.</div>
+        </div>
+
+        <label class="switch" aria-label="Ativar bloqueio">
+          <input id="lockEnabledToggle" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div id="pinBox" class="pin-box">
+        <label class="settings-label" for="lockPinSet">PIN (4 dígitos)</label>
+        <input id="lockPinSet" class="settings-input" inputmode="numeric" maxlength="4" placeholder="1234" />
+        <div class="settings-help">Dica: escolha um PIN simples para o beta. Depois a gente evolui.</div>
+      </div>
+
+      <div class="settings-actions">
+        <button id="savePinBtn" class="btn-action" type="button">Salvar</button>
+        <button id="lockNowBtn" class="btn-secondary" type="button">Bloquear agora</button>
+      </div>
+
+      <button id="disableLockBtn" class="btn-ghost" type="button">Desativar bloqueio</button>
+    </div>
+  </div>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>
